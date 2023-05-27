@@ -9,6 +9,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+set(CMAKE_BUILD_TYPE "Release")
+
 #conan配置
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
@@ -21,7 +23,7 @@ conan_cmake_configure(REQUIRES gtest/1.13.0
                       GENERATORS CMakeToolchain
                       IMPORTS "bin, *.dll -> ./bin"
                       IMPORTS "lib, *.dylib* -> ./bin"
-                      OPTIONS *:shared=False)
+                      OPTIONS *:shared=True)
 
 conan_cmake_install(PATH_OR_REFERENCE .
                     BUILD missing
@@ -36,4 +38,5 @@ option(unit_test "Enable unit test" ON)
 
 if(unit_test) 
     add_subdirectory(geometry-test)
+    include(CTest)
 endif()
