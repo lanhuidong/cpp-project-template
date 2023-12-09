@@ -4,9 +4,21 @@ C++项目模版
 ### 项目构建
 #### macOS
 ```shell
-$ mkdir build && cd build
-$ cmake ..
-$ cmake --build . && ctest
+$ cmake -G Ninja -S . -B build -Dtest=ON -DCMAKE_CXX_COMPILER="/usr/local/opt/llvm/bin/clang++"
+$ cmake --build build && ctest --test-dir build
+```
+
+#### Windows Visual Studio 2017
+```powershell
+> cmake -G "Visual Studio 15 2017 Win64" -S . -B build
+> cmake --config Release --build build
+> cmake 
+```
+#### Windows Visual Studio 2022
+```powershell
+> cmake -G "Visual Studio 17 2022" -S . -B build
+> cmake --config Release --build build
+> cmake 
 ```
 
 ### 代码格式

@@ -1,15 +1,24 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.28)
 
-project(Demo
-    VERSION 1.0.0
-    LANGUAGES C CXX
-)
+project(Demo VERSION 1.0.0 LANGUAGES CXX)
+
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
+    message(FATAL_ERROR "In-source build not allowed.\n")
+endif()
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(CMAKE_BUILD_TYPE "Release")
+set(CMAKE_CONFIGURATION_TYPES ${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
+
+# MSVC编译器选项配置
+add_compile_definitions("$<$<CXX_COMPILER_ID:MSVC>:/MP>")
+add_compile_definitions("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+add_compile_definitions("$<$<CXX_COMPILER_ID:MSVC>:/permissive->")
 
 #conan配置
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
@@ -34,9 +43,9 @@ find_package(fmt REQUIRED)
 add_subdirectory(app)
 add_subdirectory(geometry)
 
-option(unit_test "Enable unit test" ON)
+option(est "Enable unit test" ON)
 
-if(unit_test) 
+if(test) 
     add_subdirectory(geometry-test)
     include(CTest)
 endif()
